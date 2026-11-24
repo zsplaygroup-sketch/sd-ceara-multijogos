@@ -34,6 +34,7 @@ static void draw(int selected, const char *notice) {
  for (i=0;i<(int)NITEMS;i++)
    scr_printf("     %s %s\n", selected==i?">":" ", items[i].name);
  scr_printf("\n     DIRECIONAL: SELECIONAR  |  X: ABRIR\n");
+ scr_printf("     CAMINHO: %s\n", items[selected].elf);
  scr_printf("\n     %s\n", notice ? notice : "PROTOTIPO DE NAVEGACAO");
 }
 int main(int argc, char **argv) {
@@ -64,7 +65,7 @@ int main(int argc, char **argv) {
      /* The USB mass device must be available to the EE loader.
         A separate USB/IOP initialization stage is still required. */
      FILE *fp=fopen(items[selected].elf,"rb");
-     if (!fp) { notice="ELF inacessivel: verifique USB/driver/caminho"; redraw=1; }
+     if (!fp) { notice="ARQUIVO NAO ENCONTRADO: conferir USB, driver e nome do ELF"; redraw=1; }
      else {
        fclose(fp);
        scr_clear();
@@ -72,7 +73,7 @@ int main(int argc, char **argv) {
        padPortClose(0,0);
        padEnd();
        LoadExecPS2(items[selected].elf,0,NULL);
-       notice="Falha ao iniciar ELF: revisar metodo de carregamento"; redraw=1;
+       notice="LOAD EXEC RETORNOU: revisar USB, IOP e metodo de execucao"; redraw=1;
        padInit(0);
        padPortOpen(0,0,padbuf);
      }
