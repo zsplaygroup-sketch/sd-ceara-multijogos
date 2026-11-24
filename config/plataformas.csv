@@ -1,0 +1,9 @@
+plataforma,elf,roms,estado
+Mega Drive,PGEN.ELF,ROMS/MEGA_DRIVE,aguardando_teste
+Super Nintendo,SNES.ELF,ROMS/SNES,aguardando_teste
+Super Nintendo alternativo,SNESTICLE.ELF,ROMS/SNES,aguardando_teste
+Game Boy,GAME_BOY.ELF,ROMS/GAME_BOY,aguardando_teste
+Game Boy Advance,TEMPGBA.ELF,ROMS/GBA,aguardando_teste
+Atari 2600,ATARI_2600.ELF,ROMS/ATARI_2600,aguardando_teste
+Master System,MASTER_SYSTEM.ELF,ROMS/MASTER_SYSTEM,aguardando_teste
+Super Mario 64,SM64.ELF,ROMS/SM64,aguardando_teste
