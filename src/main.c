@@ -7,7 +7,7 @@
 #include <sifrpc.h>
 #include <loadfile.h>
 #include <libpad.h>
-#include <fileXio_rpc.h>
+
 #include <sbv_patches.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -40,22 +40,20 @@ static int load_irx(const char *name, void *buf, unsigned int size) {
  return ret;
 }
 static void init_usb(void) {
- int r;
  scr_clear(); scr_printf("SD CEARA - INICIALIZACAO USB V0.6\n\n");
- SifInitIopHeap();
+
  SifLoadFileInit();
  sbv_patch_enable_lmb();
  load_irx("iomanX",iomanx_irx,size_iomanx_irx);
  load_irx("fileXio",filexio_irx,size_filexio_irx);
- r=fileXioInit();
- scr_printf("  fileXioInit=%d\n",r);
+
  load_irx("usbd",usbd_irx,size_usbd_irx);
  load_irx("bdm",bdm_irx,size_bdm_irx);
  load_irx("bdmfs_fatfs",bdmfs_fatfs_irx,size_bdmfs_fatfs_irx);
  load_irx("usbmass_bd",usbmass_bd_irx,size_usbmass_bd_irx);
  sleep(3);
- usb_status=fileXioOpen("mass:/",O_RDONLY);
- if(usb_status>=0) fileXioClose(usb_status);
+ usb_status=open("mass:/",O_RDONLY);
+ if(usb_status>=0) close(usb_status);
  snprintf(notice,sizeof(notice),"USB teste raiz: retorno %d (pode ser diretorio)",usb_status);
  sleep(2);
 }
@@ -83,11 +81,11 @@ int main(void) {
    if(pressed&PAD_DOWN){sel=(sel+1)%COUNT;redraw=1;}
    if(pressed&PAD_UP){sel=(sel+COUNT-1)%COUNT;redraw=1;}
    if(pressed&PAD_CROSS){
-     int fd=fileXioOpen(items[sel].elf,O_RDONLY);
+     int fd=open(items[sel].elf,O_RDONLY);
      if(fd<0){
        snprintf(notice,sizeof(notice),"USB/ELF: fileXioOpen retornou %d",fd);
      } else {
-       fileXioClose(fd);
+       close(fd);
        snprintf(notice,sizeof(notice),"ELF ENCONTRADO! Tentando executar...");
        draw(sel);sleep(1);
        padPortClose(0,0);padEnd();
