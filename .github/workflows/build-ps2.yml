@@ -1,27 +1,20 @@
-
 name: Compilar SD Ceara Multijogos
-
 on:
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
       image: ps2dev/ps2dev:latest
-
     steps:
-      - name: Baixar projeto
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Preparar ferramentas
-        run: apk add --no-cache make bash
-
+        run: apk add --no-cache make bash python3
+      - name: Gerar IRX embutidos
+        run: python3 src/generate_irx.py
       - name: Compilar MENU.ELF
         run: make -C src
-
-      - name: Disponibilizar ELF
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: SD-CEARA-MULTIJOGOS-ELF
           path: src/MENU.ELF
